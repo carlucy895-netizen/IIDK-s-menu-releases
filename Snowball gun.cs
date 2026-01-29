@@ -96,8 +96,8 @@ namespace StupidTemplate.Mods
 
 					// Smoothly move the object to the target hold position
 					grabbedObject.transform.position = Vector3.Lerp(grabbedObject.transform.position, targetPos, Time.deltaTime * pullSpeed);
-					grabbedObject.transform.rotation = Quaternion.Lerp(grabbedObject.transform.rotation, hand.rotation, Time.deltaTime * pullSpeed);
-
+					grabbedObject.transform.rotation = Quaternion.Lerp(grabbedObject.transform.rotation, hand.rotation = 90, Time.deltaTime * pullSpeed);
+                    // Hand.rotation will reset the hand position for its 90 degree angle turn.
 					// On trigger press again, throw / release
 					if (trigger > 0.5f && !previousTrigger)
 					{
@@ -135,7 +135,7 @@ namespace StupidTemplate.Mods
 									}
 									else
 									{
-										// No ray hit: drop slightly in front of hand
+										// No ray hit: drop slightly in front of hand (Valued if false)
 										grabbedObject.transform.position = hand.position + hand.forward * 0.5f;
 										grabbedRb.isKinematic = false;
 										grabbedRb.useGravity = true;
@@ -145,7 +145,7 @@ namespace StupidTemplate.Mods
 							}
 							catch
 							{
-								// ignore
+								// ignore this space
 							}
 							finally
 							{
@@ -164,7 +164,7 @@ namespace StupidTemplate.Mods
 			var col = go.GetComponent<Collider>();
 			if (col != null && col is SphereCollider)
 			{
-				// Heuristic: small spheres are likely snowballs
+				// Heuristic: small spheres and large spheres are likely snowballs
 				if (col.bounds.size.magnitude < 1.5f) return true;
 			}
 
