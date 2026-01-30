@@ -1,8 +1,8 @@
-
 using GorillaLocomotion;
 using StupidTemplate.Classes;
 using UnityEngine;
 using UnityEngine.XR;
+using static OVRHand;
 using static StupidTemplate.Menu.Main;
 
 namespace StupidTemplate.Mods
@@ -19,8 +19,9 @@ namespace StupidTemplate.Mods
 
 		private static bool previousTrigger;
 
-		// Call this in the menu execution loop (toggable button)
-		public static void SnowballGrab()
+        // Call this in the menu execution loop (toggable button)
+        [System.Obsolete]
+        public static void SnowballGrab()
 		{
 			// Only operate while the player is in-game and using the right-hand gun
 			if (!NetworkSystem.Instance.InRoom) return;
@@ -96,8 +97,8 @@ namespace StupidTemplate.Mods
 
 					// Smoothly move the object to the target hold position
 					grabbedObject.transform.position = Vector3.Lerp(grabbedObject.transform.position, targetPos, Time.deltaTime * pullSpeed);
-					grabbedObject.transform.rotation = Quaternion.Lerp(grabbedObject.transform.rotation, hand.rotation = 180, Time.deltaTime * pullSpeed);
-                    // Hand.rotation will reset the hand position for its 180 degree angle turn.
+					grabbedObject.transform.rotation = Quaternion.Lerp(grabbedObject.transform.rotation, hand.rotation, Time.deltaTime * pullSpeed);
+
 					// On trigger press again, throw / release
 					if (trigger > 0.5f && !previousTrigger)
 					{
@@ -135,7 +136,7 @@ namespace StupidTemplate.Mods
 									}
 									else
 									{
-										// No ray hit: drop slightly in front of hand (Valued if false)
+										// No ray hit: drop slightly in front of hand
 										grabbedObject.transform.position = hand.position + hand.forward * 0.5f;
 										grabbedRb.isKinematic = false;
 										grabbedRb.useGravity = true;
@@ -145,7 +146,7 @@ namespace StupidTemplate.Mods
 							}
 							catch
 							{
-								// ignore this space
+								// ignore
 							}
 							finally
 							{
@@ -157,15 +158,24 @@ namespace StupidTemplate.Mods
 				}
 			}
 
+			previousTrigger = trigger > 0.5f;
+		}
+
+		private static bool IsSnowballLike(GameObject go)
+		{
+			if (go == null) return false;
+
+			// Check for snowball in name
 			if (go.name != null && go.name.ToLower().Contains("snow")) return true;
+
+			// Check for Snowball tag
 			if (go.CompareTag("Snowball")) return true;
 
-			// Some snowball prefabs put the rigidbody on a parent or child; just accept small spheres as a fallback
-			var col = go.GetComponent<Collider>();
-			if (col != null && col is SphereCollider)
+			// Check parent and child objects for snowball indicators
+			if (go.transform.parent != null && go.transform.parent.name.ToLower().Contains("snow")) return true;
+			foreach (Transform child in go.transform)
 			{
-				// Heuristic: small spheres and large spheres are likely snowballs
-				if (col.bounds.size.magnitude < 1.5f) return true;
+				if (child.name.ToLower().Contains("snow")) return true;
 			}
 
 			return false;
