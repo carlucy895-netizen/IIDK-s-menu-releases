@@ -96,8 +96,8 @@ namespace StupidTemplate.Mods
 
 					// Smoothly move the object to the target hold position
 					grabbedObject.transform.position = Vector3.Lerp(grabbedObject.transform.position, targetPos, Time.deltaTime * pullSpeed);
-					grabbedObject.transform.rotation = Quaternion.Lerp(grabbedObject.transform.rotation, hand.rotation = 90, Time.deltaTime * pullSpeed);
-                    // Hand.rotation will reset the hand position for its 90 degree angle turn.
+					grabbedObject.transform.rotation = Quaternion.Lerp(grabbedObject.transform.rotation, hand.rotation = 180, Time.deltaTime * pullSpeed);
+                    // Hand.rotation will reset the hand position for its 180 degree angle turn.
 					// On trigger press again, throw / release
 					if (trigger > 0.5f && !previousTrigger)
 					{
