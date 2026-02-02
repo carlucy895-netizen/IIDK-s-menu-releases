@@ -2,7 +2,7 @@ using GorillaLocomotion;
 using StupidTemplate.Classes;
 using UnityEngine;
 using UnityEngine.XR;
-using static OVRHand;
+using static Base.Model;
 using static StupidTemplate.Menu.Main;
 
 namespace StupidTemplate.Mods
@@ -13,9 +13,9 @@ namespace StupidTemplate.Mods
 		private static Rigidbody grabbedRb;
 
 		// Tweakable parameters
-		public static float pullSpeed = 20f;
+		public static float pullSpeed = 35f;
 		public static float holdDistance = 0.2f;
-		public static float throwStrength = 10f;
+		public static float throwStrength = 10.5f;
 
 		private static bool previousTrigger;
 
@@ -161,21 +161,21 @@ namespace StupidTemplate.Mods
 			previousTrigger = trigger > 0.5f;
 		}
 
-		private static bool IsSnowballLike(GameObject go)
+		private static bool IsSnowballLike(GameObject grab)
 		{
 			if (go == null) return false;
 
 			// Check for snowball in name
-			if (go.name != null && go.name.ToLower().Contains("snow")) return true;
+			if (go.name != null && go.name.ToLower().Contains("snowball")) return true;
 
 			// Check for Snowball tag
 			if (go.CompareTag("Snowball")) return true;
 
 			// Check parent and child objects for snowball indicators
-			if (go.transform.parent != null && go.transform.parent.name.ToLower().Contains("snow")) return true;
+			if (go.transform.parent != null && go.transform.parent.name.ToLower().Contains("snowball")) return true;
 			foreach (Transform child in go.transform)
 			{
-				if (child.name.ToLower().Contains("snow")) return true;
+				if (child.name.ToLower().Contains("snowball")) return true;
 			}
 
 			return false;
