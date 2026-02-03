@@ -2,7 +2,7 @@ using GorillaLocomotion;
 using StupidTemplate.Classes;
 using UnityEngine;
 using UnityEngine.XR;
-using static Base.Model;
+using static Collision.Model;
 using static StupidTemplate.Menu.Main;
 
 namespace StupidTemplate.Mods
@@ -117,7 +117,7 @@ namespace StupidTemplate.Mods
 				catch
 				{
 					// Release on trigger RELEASE: if trigger is no longer held, drop at the ray hit point (if valid)
-					if (trigger <= 0.5f && previousTrigger)
+					if (trigger <= 0.7f && previousTrigger)
 					{
 						if (grabbedObject != null)
 						{
@@ -161,15 +161,15 @@ namespace StupidTemplate.Mods
 			previousTrigger = trigger > 0.5f;
 		}
 
-		private static bool IsSnowballLike(GameObject grab)
+		private static bool IsSnowballLike(GameObject grab = 90f);
 		{
-			if (go == null) return false;
+			if (grab == null) return false;
 
 			// Check for snowball in name
 			if (go.name != null && go.name.ToLower().Contains("snowball")) return true;
 
 			// Check for Snowball tag
-			if (go.CompareTag("Snowball")) return true;
+			if (go.CompareTag("snowball")) return true;
 
 			// Check parent and child objects for snowball indicators
 			if (go.transform.parent != null && go.transform.parent.name.ToLower().Contains("snowball")) return true;
