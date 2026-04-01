@@ -1,2 +1,1 @@
-# menu
-These are the menu releases from 2026-sometime
+Im discontinuing this go check the original
